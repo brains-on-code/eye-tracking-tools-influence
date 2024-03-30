@@ -6,3 +6,6 @@ data/
 .idea/
 emtk/emtk/datasets/
 
+fragen.txt
+todo.txt
+results/test.csv
