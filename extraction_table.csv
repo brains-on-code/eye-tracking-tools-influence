@@ -1,0 +1,19 @@
+Data item,Description,RQs
+Title,Title of the study,
+ID,"ID of the study (S1, S2, …)",
+DOI,"Document object identifier to link to the concrete instance of a paper. If does not exist, other link to concrete instance of a paper.",
+citation (in APA),Paper citation in APA format.,
+year,Publication year of the paper.,
+venue,"Either journal, conference, or workshop.",
+tool,"Tool that is used to analyze the eye tracking data and which part of the eye tracking data, if named. If a custom tool is used, a description of the tool used will be added.",1
+tool justification/consequence,"Justifications and/or consequences that the author gave for the choice of tool to analyze the eye tracking data, if given.",2
+eyetracker,Which eye tracker the study was using to measure the participants.,1
+configuration eyetracker,"Which configuration the eye tracker has, for example: Distance between screen and participant, size/resolution of screen,...",1
+study task,"Which task the participants needed to perform to complete the study. (program comprehension, debugging, Traceability, Collaborative, Comprehension(non-code),…)",1
+#participants,Participant sample size.,1
+demographics,"Composition of the sample, e.g. professionals, faculty, students.",1
+#items per participant,Number of items a participant had to look at.,1
+item type,"What kind of item the participant had to look at, for example for diagrams it would be a diagram, for code comprehension a code snippet as a list",1
+item language,"Which programming language the item originates from, if it is possible to describe, as a list",1
+item scrolling,If the items were big enough that scrolling was involved to see all of it during the eye tracking measurements,1
+replication package,Does the study have a replication package available,3

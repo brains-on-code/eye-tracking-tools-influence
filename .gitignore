@@ -1,11 +1,9 @@
-data/26/
-data/54/
-data/24/
-data/4/
-data/
-.idea/
-emtk/emtk/datasets/
+data/StudyEMIP/*
+data/StudySharafi/*
+data/StudyPeitek/*
 
+.idea/
+.ipynb_checkpoints/
 fragen.txt
 todo.txt
-results/test.csv
+myenv/
