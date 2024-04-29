@@ -21,13 +21,13 @@ We provide the extracted data and the extraction form of the systematic mapping 
 
 You will need the three data sets that were used for the study.
 
-EMIP: [link](https://osf.io/53kts/) (to be saved in StudyEMIP)
+EMIP dataset: [link](https://osf.io/53kts/) (to be saved in [data/StudyEMIP](data/StudyEMIP)) \
+Sharafi et al.: [link](https://web.eecs.umich.edu/~weimerw/fmri-resources/2018-Eye-Tracking-Data.zip) (to be saved in [data/StudySharafi](data/StudySharafi)) \
+Peitek et al.: 
+- [repository](https://github.com/brains-on-code/NoviceVsExpert) (Repository to be cloned in [data/StudyPeitek](data/StudyPeitek))
+- [data](https://osf.io/4hjbd/) (Raw data that needs to be saved in 'data/StudyPeitek/dataEvaluation/data/') 
 
-StudyPeitek: 
-- [repository](https://github.com/brains-on-code/NoviceVsExpert) (Repository to be cloned in StudyPeitek)
-- [data](https://osf.io/4hjbd/) (Raw data that needs to be saved in 'data/StudyPeitek/dataEvaluation/data/')
 
-StudySharafi: [link](https://web.eecs.umich.edu/~weimerw/fmri-resources/ 2018-Eye-Tracking-Data.zip) (to be saved in StudySharafi)
 
 Download these replication packages and save them in the corresponding folder in the data folder.
 
