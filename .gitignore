@@ -1,12 +1,13 @@
 data/StudyEMIP/*
 data/StudySharafi/*
 data/StudyPeitek/*
+!data/*/.gitkeep
 
 .idea/
-.ipynb_checkpoints/
+.ipynb_checkpoints
 fragen.txt
 todo.txt
 myenv/
-StudyPeitek/data/RQ1/plots_ogama/scanpaths/
-StudyPeitek/data/RQ1/plots_ogama/vertical_scanpaths/
-utils/__pycache__/
+StudyPeitek/data/RQ1/plots_ogama/scanpaths
+StudyPeitek/data/RQ1/plots_ogama/vertical_scanpaths
+utils/__pycache__
