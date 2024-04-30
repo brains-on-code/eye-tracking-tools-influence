@@ -2,7 +2,8 @@ import os
 import pandas as pd
 import sqlite3
 import numpy as np
-from peitek_opt import opt
+from utils.peitek_opt import opt
+
 # Need to register numpy types to be able to save them in the database, as SQL only supports int8
 sqlite3.register_adapter(np.int64, lambda val: int(val))
 sqlite3.register_adapter(np.int32, lambda val: int(val))
@@ -120,7 +121,7 @@ def calculate_results_for_subject_sharafi(subject, database_path=base_database_p
 
 ######################################EMIP Ogama########################################
 
-trial_to_num = {
+trial_to_num_emip = {
 		'mupliple_choice_rectangle.jpg': '1',
 		'mupliple_choice_vehicle.jpg': '2',
 		'rectangle_java.jpg': '3',
@@ -162,7 +163,7 @@ def add_to_sql_emip(c, df_msg, subject, last_task_name):
 	# For each row in the dataframe
 	for index, row in df_msg.iterrows():
 		# Insert the data into the table
-		c.execute("INSERT INTO ["+ subject +"Rawdata] (SubjectName, TrialSequence, Time, GazePosX, GazePosY) VALUES (?, ?, ?, ?, ?)", (subject, trial_to_num[last_task_name], row['Time'], row['X'], row['Y']))
+		c.execute("INSERT INTO ["+ subject +"Rawdata] (SubjectName, TrialSequence, Time, GazePosX, GazePosY) VALUES (?, ?, ?, ?, ?)", (subject, trial_to_num_emip[last_task_name], row['Time'], row['X'], row['Y']))
 
 	trialstarttime = df_msg['Time'].min()
 	# Endtime - Starttime + 4 ms for the duration of the last measuremnt
@@ -172,10 +173,14 @@ def add_to_sql_emip(c, df_msg, subject, last_task_name):
 		print(df_msg)
 
 	trialduration = int(trialduration)
-	c.execute("INSERT INTO Trials (SubjectName, TrialID, TrialName, TrialSequence, Category,  TrialStartTime, Duration) VALUES (?, ?, ?, ?, ?, ?, ?)", (subject, trial_to_num[last_task_name], last_task_name, trial_to_num[last_task_name], "",trialstarttime, trialduration))
+	c.execute("INSERT INTO Trials (SubjectName, TrialID, TrialName, TrialSequence, Category,  TrialStartTime, Duration) VALUES (?, ?, ?, ?, ?, ?, ?)", (subject, trial_to_num_emip[last_task_name], last_task_name, trial_to_num_emip[last_task_name], "",trialstarttime, trialduration))
 
 def import_data_into_ogama_emip(path, subject, database_path=base_database_path):
 
+	# Check if database exists
+	if not os.path.exists(database_path):
+		raise Exception("Database does not exist")
+	
 	# Load the Tobii eye tracker data into a Pandas DataFrame and skip lines that start with ## as they are comments
 
 	df = None
@@ -246,6 +251,10 @@ def import_data_into_ogama_emip(path, subject, database_path=base_database_path)
 	conn.commit()
 
 def drop_all_subject_tables_emip(database_path=base_database_path):
+	# Check if database exists
+	if not os.path.exists(database_path):
+		raise Exception("Database does not exist")
+	
 	# Connect to database
 	import sqlite3
 	conn = sqlite3.connect(database_path)
@@ -266,6 +275,10 @@ def drop_all_subject_tables_emip(database_path=base_database_path):
 
 
 def calculate_results_for_subject_emip(subject, database_path=base_database_path):
+	# Check if database exists
+	if not os.path.exists(database_path):
+		raise Exception("Database does not exist")
+	
 	# Connect to database
 	import sqlite3
 	conn = sqlite3.connect(database_path)
@@ -299,7 +312,7 @@ def calculate_results_for_subject_emip(subject, database_path=base_database_path
 
 ####################################Peitek Ogama#############################################
 
-trial_to_num = {
+num_to_trial_peitek = {
     1: "IsPrime",
     2: "SiebDesEratosthenes",
     3: "IsAnagram",
@@ -334,13 +347,13 @@ trial_to_num = {
     32: "Rectangle",
 }
 
-num_to_trial = {v: k for k, v in trial_to_num.items()}
+trial_to_num_peitek = {v: k for k, v in num_to_trial_peitek.items()}
 
 added_subjects = []
 
 def add_to_sql_peitek(c, df_eyetracking, subject_name, task_name, starttime, endtime):
 	
-	print("Adding data for subject " + subject_name + " to the database...", task_name, starttime, endtime)
+	# print("Adding data for subject " + subject_name + " to the database...", task_name, starttime, endtime)
 	# Add a table for the subject called Subject + 'RawData'
 	c.execute("CREATE TABLE IF NOT EXISTS ["+ subject_name +"Rawdata] ([ID] integer PRIMARY KEY AUTOINCREMENT NOT NULL,[SubjectName] varchar(50) NOT NULL COLLATE NOCASE, [TrialSequence] integer NOT NULL, [Time] integer NOT NULL, [PupilDiaX] float, [PupilDiaY] float, [GazePosX] float, [GazePosY] float, [MousePosX] float, [MousePosY] float, [EventID] integer)")
 
@@ -351,10 +364,10 @@ def add_to_sql_peitek(c, df_eyetracking, subject_name, task_name, starttime, end
 	# GazePosX = ' X'
 	# GazePosY = ' Y'
 
-	if task_name not in trial_to_num:
-		trial_to_num[task_name] = trial_to_num["current_count"]
-		trial_to_num["current_count"] += 1
-	trial_id = trial_to_num[task_name]
+	if task_name not in trial_to_num_peitek:
+		trial_to_num_peitek[task_name] = trial_to_num_peitek["current_count"]
+		trial_to_num_peitek["current_count"] += 1
+	trial_id = trial_to_num_peitek[task_name]
 	
 	# For each row in the dataframe
 	for index, row in df_eyetracking.iterrows():
@@ -366,7 +379,11 @@ def add_to_sql_peitek(c, df_eyetracking, subject_name, task_name, starttime, end
 	duration = endtime - starttime
 	c.execute("INSERT INTO Trials (SubjectName, TrialID, TrialName, TrialSequence, Category,  TrialStartTime, Duration) VALUES (?, ?, ?, ?, ?, ?, ?)", (subject_name, trial_id, task_name, trial_id, "",starttime, duration))
 
-def import_data_into_ogama_peitek(df_eyetracking, metadata, database_path=base_database_path, opt=None):
+def import_data_into_ogama_peitek(df_eyetracking, metadata, database_path=base_database_path, opt=opt):
+
+	# Check if database exists
+	if not os.path.exists(database_path):
+		raise Exception("Database does not exist")
 
 	# normalize the time regarding eyetracking to 0
 	#df_eyetracking["time"] = df_eyetracking["time"].astype(float)
@@ -445,6 +462,10 @@ def import_data_into_ogama_peitek(df_eyetracking, metadata, database_path=base_d
 	conn.commit()
 
 def drop_all_subject_tables_peitek(database_path=base_database_path):
+	# Check if database exists
+	if not os.path.exists(database_path):
+		raise Exception("Database does not exist")
+	
 	added_subjects = []
 	# Connect to database
 	conn = sqlite3.connect(database_path)

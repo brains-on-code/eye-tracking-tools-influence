@@ -1,13 +1,13 @@
 import os
 import xml.etree.ElementTree as ET
 import pandas as pd
-from corrected_pygaze_functions import fixation_detection_fixed, saccade_detection_fixed
+from utils.pygazehelper.corrected_pygaze_functions import fixation_detection_fixed, saccade_detection_fixed
 
 
-def call_fixation_detection_on_data(fixation_info, participant, time, x, y, task = 0, missing=0.0, maxdist=25, mindur=50):
-	missing = missing  # Missing value threshold 
-	maxdist = maxdist  # Maximum distance for a fixation 
-	mindur = mindur  # Minimum duration for a fixation
+def call_fixation_detection_on_data(fixation_info, participant, time, x, y, task = 0, parameters = {'missing': 0.0, 'maxdist': 25, 'mindur': 50}):
+	missing = parameters['missing']  # Missing value threshold 
+	maxdist = parameters['maxdist']  # Maximum distance for a fixation 
+	mindur = parameters['mindur']  # Minimum duration for a fixation
 
 	# Perform fixation detection using the fixed fixation_detection function
 	Sfix, Efix = fixation_detection_fixed(x, y, time, missing=missing, maxdist=maxdist, mindur=mindur)
@@ -23,11 +23,11 @@ def call_fixation_detection_on_data(fixation_info, participant, time, x, y, task
 	fixation_info['Total Fixation Duration [ms]'].append(total_duration)
 	fixation_info['Average Fixation Duration [ms]'].append(average_duration)
 
-def call_saccade_detection_on_data(saccade_info, participant, time, x, y, task = 0):
-    missing = 0.0  # Missing value threshold 
-    minlen = 5  # Maximum distance for a saccade 
-    maxvel = 40  # Minimum duration for a saccade 
-    maxacc = 340
+def call_saccade_detection_on_data(saccade_info, participant, time, x, y, task = 0, parameters={'missing': 0.0, 'minlen': 5, 'maxvel': 40, 'maxacc': 340}):
+    missing = parameters['missing']  # Missing value threshold 
+    minlen = parameters['minlen']  # Maximum distance for a saccade 
+    maxvel = parameters['maxvel']  # Minimum duration for a saccade 
+    maxacc = parameters['maxacc']
 
     # Perform saccade detection using the saccade_detection function
     Ssac, Esac = saccade_detection_fixed(x, y, time, missing=missing, minlen=minlen, maxvel=maxvel, maxacc=maxacc)
@@ -69,7 +69,6 @@ def prepare_tobii_data(directory_path, file_name, fixation_info, fn, parameters 
 				print("no possible skipped rows worked", e)
 				break
 		else:
-			print("possible skipped rows worked", possible_skipped_rows[counter])
 			break
 
 	df['Type'] = df['Type'].astype(str)
@@ -112,7 +111,7 @@ def prepare_tobii_data(directory_path, file_name, fixation_info, fn, parameters 
 				time = time / 1000
 
 				participant_id = file_name.split('_')[0]
-				fn(fixation_info, participant_id, time, x_right, y_right, last_task_name, parameters['missing'], parameters['maxdist'], parameters['mindur'])
+				fn(fixation_info, participant_id, time, x_right, y_right, last_task_name, parameters)
 
 			last_task_name = current_task_name
 			last_task_row_number = msg_row
@@ -146,7 +145,7 @@ def prepare_txt_data(directory_path, file_name, fixation_info, fn, parameters = 
 		return
 	txt_file = os.path.join(directory_path, file_name)
 
-	path_elements = directory_path.split(os.sep)
+	path_elements = directory_path.split('/')
 	participant_id = path_elements[-1]
 
 	# Load the eye tracker data into a Pandas DataFrame
@@ -168,7 +167,7 @@ def prepare_txt_data(directory_path, file_name, fixation_info, fn, parameters = 
 		image_df = df[df[' ImageName'] == image_name]
 
 		# Call the defined fn
-		fn(fixation_info, participant_id, image_df[' StartTime'], image_df[' X'], image_df[' Y'], image_name, parameters['missing'], parameters['maxdist'], parameters['mindur'])
+		fn(fixation_info, participant_id, image_df[' StartTime'], image_df[' X'], image_df[' Y'], image_name, parameters)
 	
 
 # Define the function to prepare the eyetracking data
@@ -209,9 +208,6 @@ def fixation_data_analysis(directory_path, output_csv = "pygaze_fixations.csv", 
     # Write the DataFrame to a CSV file
     count_df.to_csv(output_csv, index=False)
 
-    # Print the fixation information
-    print(count_df)
-
     print(f"Fixation information saved to {output_csv}")
   
 
@@ -251,14 +247,10 @@ def saccade_data_analysis(directory_path, output_csv="pygaze_saccades.csv", para
     # Create a DataFrame to store the saccade information
     count_df = pd.DataFrame(saccade_info)
 
-    output_csv = os.path.join("results/", output_csv)
-
     # Write the DataFrame to a CSV file
     count_df.to_csv(output_csv, index=False)
 
     # Print the saccade information
-    print(count_df)
-
     print(f"Saccade information saved to {output_csv}")
 
 

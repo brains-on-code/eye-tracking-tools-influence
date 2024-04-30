@@ -8,6 +8,7 @@ data/StudyPeitek/*
 fragen.txt
 todo.txt
 myenv/
-StudyPeitek/data/RQ1/plots_ogama/scanpaths
-StudyPeitek/data/RQ1/plots_ogama/vertical_scanpaths
+StudyPeitek/data/RQ1/plots_ogama
+StudyPeitek/data/RQ1/plots_pygaze
 utils/__pycache__
+utils/pygazehelper/__pycache__
