@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+message: "If you use our data or replication package, please cite it as below."
+authors:
+- family-names: "Dörzapf"
+  given-names: "Timon"
+  orcid: "https://orcid.org/0009-0000-6833-2544"
+- family-names: "Peitek"
+  given-names: "Norman"
+  orcid: "https://orcid.org/0000-0001-7828-4558"
+- family-names: "Wyrich"
+  given-names: "Marvin"
+  orcid: "https://orcid.org/0000-0001-8506-3294"
+- family-names: "Apel"
+  given-names: "Sven"
+  orcid: "https://orcid.org/0000-0003-3687-2233"
+title: "Data Analysis Tools Affect Outcomes of Eye-Tracking Studies"
+version: 1.0.0
+doi: 
+date-released: 2024-08-06
+url: "https://github.com/brains-on-code/eye-tracking-tools-influence"
+preferred-citation:
+  type: proceedings
+  authors:
+  - family-names: "Dörzapf"
+    given-names: "Timon"
+    orcid: "https://orcid.org/0009-0000-6833-2544"
+  - family-names: "Peitek"
+    given-names: "Norman"
+    orcid: "https://orcid.org/0000-0001-7828-4558"
+  - family-names: "Wyrich"
+    given-names: "Marvin"
+    orcid: "https://orcid.org/0000-0001-8506-3294"
+  - family-names: "Apel"
+    given-names: "Sven"
+    orcid: "https://orcid.org/0000-0003-3687-2233"
+  doi: "10.1145/3674805.3686672"
+  conference: "International Symposium on Empirical Software Engineering and Measurement "
+  month: 10
+  start: 0 # First page number 
+  end: 0 # Last page number
+  title: "Data Analysis Tools Affect Outcomes of Eye-Tracking Studies"
+  year: 2024
