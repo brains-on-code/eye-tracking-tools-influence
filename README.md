@@ -1,11 +1,15 @@
+[![DOI](https://zenodo.org/badge/793444802.svg)](https://doi.org/10.5281/zenodo.14275134)
+
 # Data Analysis Tools Affect Outcomes of Eye-Tracking Studies
 
-This repository contains the replication package for our study "Data Analysis Tools Affect Outcomes of Eye-Tracking Studies".
+This repository contains the replication package for our study [Data Analysis Tools Affect Outcomes of Eye-Tracking Studies](https://doi.org/10.1145/3674805.3686672).
 We provide the extracted data and the extraction form of the systematic mapping study as well as the scripts that were used to perform the three case studies.
+
+
 
 ---
 
-# SMS
+# Systematic Mapping Study (SMS)
 
 ## Structure
 
